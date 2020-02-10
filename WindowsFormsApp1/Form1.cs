@@ -13,13 +13,11 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         private Button[,] buttons;
-
+        public static int[,] cp_matrix = Sudoku.GenerateCopy(Form2.matrix);
         public Form1()
         {
             InitializeComponent();
         }
-
-
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -40,10 +38,16 @@ namespace WindowsFormsApp1
                 for (int j = 0; j < 9; j++)
                 {
                     buttons[i, j].Text = Form2.matrix[i, j].ToString();
-                    if (buttons[i, j].Text != "0") 
+                    if (buttons[i, j].Text != "0")
+                    {
                         buttons[i, j].BackColor = Color.LightSlateGray;
-                    buttons[i, j].Click += new EventHandler(EventClick);
-                    buttons[i, j].KeyDown += new KeyEventHandler(EventKeyPressed);
+                    }
+                    else
+                    {
+                        buttons[i, j].Text = "";
+                        buttons[i, j].Click += new EventHandler(EventClick);
+                        buttons[i, j].KeyDown += new KeyEventHandler(EventKeyPressed);
+                    }
                 }
         }
 
@@ -56,10 +60,27 @@ namespace WindowsFormsApp1
         {
             if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
             {
-                Sudoku.CheckCorrect_Replace(Form2.matrix, e.KeyCode.ToString()[1], (Button)sender, buttons);
+                Sudoku.CheckCorrect_Replace(cp_matrix, e.KeyCode.ToString()[1], (Button)sender, buttons);
                 //Table.set_box((Button)sender, e.KeyCode.ToString()[1]);
             }
         }
 
+        private void button82_Click(object sender, EventArgs e)
+        {
+            //The hint Button
+        }
+
+        private void button83_Click(object sender, EventArgs e)
+        {
+            //The solution Button
+            SudokuSolution.Rezolvare(SudokuSolution.solution_matrix,
+                                     SudokuSolution.GetEmptyField(SudokuSolution.solution_matrix));
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
+                {
+                    buttons[i, j].Text = SudokuSolution.solution_matrix[i, j].ToString();
+                    buttons[i, j].BackColor = Color.OrangeRed;
+                }
+        }
     }
 }

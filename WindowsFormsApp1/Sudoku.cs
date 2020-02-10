@@ -49,10 +49,10 @@ namespace WindowsFormsApp1
             int jj = (coordinates.j / 3) * 3;
             for (int p = ii; p < ii + 3; p++)
                 for (int q = jj; q < jj + 3; q++)
-                    if(coordinates.i != ii && coordinates.j != jj)
+                    if(coordinates.i != p && coordinates.j != q)
                         if (array_btn[p, q].Text == text)
                             square = false;
-
+            Console.WriteLine(square.ToString()+row.ToString()+collumn.ToString());
             return square & collumn & row;
         }
 
@@ -81,7 +81,7 @@ namespace WindowsFormsApp1
             if (correct && modifiability)
             {
                 array_btn[coordinates.i, coordinates.j].Text = input.ToString();
-                //grid[coordinates.i, coordinates.j] = number;
+                grid[coordinates.i, coordinates.j] = number;
             }
 
             if (modifiability == false)
@@ -93,8 +93,7 @@ namespace WindowsFormsApp1
             }
         }
 
-
-        public int[,] GenerateCopy(int[,] matrix)
+        public static int[,] GenerateCopy(int[,] matrix)
         {
              int[,] copy = { { 0, 0, 0, 0, 0, 0, 0, 0, 0}
             ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -112,5 +111,82 @@ namespace WindowsFormsApp1
 
             return copy;
         }
+    }
+
+    public class SudokuSolution
+    {
+
+        public static int[,] solution_matrix = Sudoku.GenerateCopy(Form2.matrix);
+
+        //method to return the first empty field
+        public static Sudoku.coords GetEmptyField(int [,] game_board) 
+        {
+            var field = new Sudoku.coords();
+            for (field.i = 0; field.i < 9; field.i++)
+                for (field.j = 0; field.j < 9; field.j++)
+                    if (game_board[field.i, field.j] == 0)
+                        return field;
+
+            return field;
+        }
+
+        //method to check if the matrix is completed or not
+        public static bool CheckCompletition(int[,] matrix)
+        {
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
+                    if (matrix[i, j] == 0)
+                        return false;
+
+            return true;
+        }
+
+        //checking if the number entered is correct
+        public static bool Checking(int [,] matrix, Sudoku.coords coordinates, int value)
+        {
+            bool row = true, collumn = true, square = true;
+            //checking row
+            for (int k = 0; k < 9; k++)
+                if (matrix[coordinates.i, k] == value)
+                    row = false;
+
+            //checking collumn
+            for (int k = 0; k < 9; k++)
+                if (matrix[k, coordinates.j] == value)
+                    collumn = false;
+
+            //checking square
+            int ii = (coordinates.i / 3) * 3;
+            int jj = (coordinates.j / 3) * 3;
+            for (int p = ii; p < ii + 3; p++)
+                for (int q = jj; q < jj + 3; q++)
+                    if (matrix[p, q] == value)
+                        square = false;
+
+            return row & collumn & square;
+        }
+        public static bool completed = false;
+        //backtracking to get the solution of the Sudoku
+        public static void Rezolvare(int[,] matrix, Sudoku.coords coordinates)
+        {
+            if (CheckCompletition(matrix))
+            {
+                completed = true;
+                return;
+            }
+            for (int l = 1; l <= 9; l++)
+                if (Checking(matrix, coordinates, l))
+                {
+                    matrix[coordinates.i, coordinates.j] = l;
+
+                    if (completed == false)
+                        Rezolvare(matrix, GetEmptyField(matrix));
+                    
+                    if(completed == false)
+                        matrix[coordinates.i, coordinates.j] = 0;
+
+                }
+        }
+
     }
 }

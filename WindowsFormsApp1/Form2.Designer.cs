@@ -49,11 +49,12 @@
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.textBox1.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft YaHei", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.textBox1.Location = new System.Drawing.Point(160, 50);
+            this.textBox1.Location = new System.Drawing.Point(3, 50);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(428, 34);
+            this.textBox1.Size = new System.Drawing.Size(793, 40);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "Hello, please select the difficulty :";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
