@@ -39,7 +39,9 @@ namespace WindowsFormsApp1
             for (int i = 0; i < 9; i++)
                 for (int j = 0; j < 9; j++)
                 {
-                    buttons[i, j].Text = Table.matrix1[i, j].ToString();
+                    buttons[i, j].Text = Form2.matrix[i, j].ToString();
+                    if (buttons[i, j].Text != "0") 
+                        buttons[i, j].BackColor = Color.LightSlateGray;
                     buttons[i, j].Click += new EventHandler(EventClick);
                     buttons[i, j].KeyDown += new KeyEventHandler(EventKeyPressed);
                 }
@@ -54,7 +56,7 @@ namespace WindowsFormsApp1
         {
             if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
             {
-                Sudoku.CheckCorrect_Replace(Table.matrix1, e.KeyCode.ToString()[1], (Button)sender, buttons);
+                Sudoku.CheckCorrect_Replace(Form2.matrix, e.KeyCode.ToString()[1], (Button)sender, buttons);
                 //Table.set_box((Button)sender, e.KeyCode.ToString()[1]);
             }
         }

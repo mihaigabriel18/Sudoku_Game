@@ -5,6 +5,7 @@ namespace WindowsFormsApp1
 {
     public class Sudoku
     {
+
         public struct coords
         {
            public int i, j;
@@ -90,6 +91,26 @@ namespace WindowsFormsApp1
                 if (!correct)
                     MessageBox.Show("Number you entered is not correct, try again");
             }
+        }
+
+
+        public int[,] GenerateCopy(int[,] matrix)
+        {
+             int[,] copy = { { 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            ,{ 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
+                    copy[i, j] = matrix[i, j];
+
+            return copy;
         }
     }
 }
