@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Threading;
 
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        public static Stopwatch stopwatch = new Stopwatch();
         private Button[,] buttons;
         public static int[,] cp_matrix;
         public Form1()
@@ -21,6 +24,7 @@ namespace WindowsFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            stopwatch.Start();
             cp_matrix = Sudoku.GenerateCopy(Form2.matrix);
 
             buttons = new[,] {
@@ -73,6 +77,7 @@ namespace WindowsFormsApp1
             {
                 Form3 f3 = new Form3();
                 Hide();
+                stopwatch.Stop();
                 f3.ShowDialog();
                 Close();
             }
@@ -92,6 +97,7 @@ namespace WindowsFormsApp1
             {
                 Form3 f3 = new Form3();
                 Hide();
+                stopwatch.Stop();
                 f3.ShowDialog();
                 Close();
                 return;

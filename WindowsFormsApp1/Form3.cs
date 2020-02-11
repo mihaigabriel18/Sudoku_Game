@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Threading;
 
 namespace WindowsFormsApp1
 {
@@ -25,6 +27,7 @@ namespace WindowsFormsApp1
             //TextBox textBox2 = new TextBox();
             //Console.WriteLine("plm");
             textBox2.Text += "You have used " + Hint.hint_uses.ToString() + " hints";
+            textBox3.Text += "You took " + Form1.stopwatch.Elapsed + " to solve this puzzle";
         }
     }
 }

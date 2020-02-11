@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Windows.Forms; 
-
+using System.Windows.Forms;
+using System.Diagnostics;
+using System.Threading;
 namespace WindowsFormsApp1
 {
     public class Sudoku
