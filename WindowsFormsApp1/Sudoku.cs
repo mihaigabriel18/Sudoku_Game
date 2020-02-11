@@ -52,7 +52,6 @@ namespace WindowsFormsApp1
                     if(coordinates.i != p && coordinates.j != q)
                         if (array_btn[p, q].Text == text)
                             square = false;
-            Console.WriteLine(square.ToString()+row.ToString()+collumn.ToString());
             return square & collumn & row;
         }
 
@@ -110,6 +109,14 @@ namespace WindowsFormsApp1
                     copy[i, j] = matrix[i, j];
 
             return copy;
+        }
+
+        public static void BackSpaceDel(int[,] matrix, Button btn, Button[,] arr_btn)
+        {
+            coords coordinates = new coords();
+            coordinates = GetCoordinates(btn, arr_btn);
+            matrix[coordinates.i, coordinates.j] = 0;
+            btn.Text = "";
         }
     }
 
@@ -187,6 +194,68 @@ namespace WindowsFormsApp1
 
                 }
         }
+    }
 
+    public class Hint
+    {
+        public static int hint_uses;
+        public static int[,] hint_map = Sudoku.GenerateCopy(SudokuSolution.solution_matrix);
+
+        public static int hint_initializers()
+        {
+            SudokuSolution.Rezolvare(hint_map, SudokuSolution.GetEmptyField(hint_map));
+            
+            int k = 0;
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
+                    if (Form1.cp_matrix[i, j] != hint_map[i, j])
+                        k++;
+
+                    return k;
+        }
+
+        //Verify if a given matrix is the sollution;
+        public static bool CheckCompletition(int[,] matrix)
+        {
+            SudokuSolution.Rezolvare(hint_map, SudokuSolution.GetEmptyField(hint_map));
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
+                    if (matrix[i, j] != hint_map[i, j])
+                        return false;
+            return true;
+        }
+
+        public static int GetRandom()
+        {
+            Random rnd = new Random();
+            int rnd_nr = rnd.Next(1, hint_initializers());
+            return rnd_nr;
+        }
+
+        public static Sudoku.coords ReplaceRandom()
+        {
+            var coordinates = new Sudoku.coords();
+            int missing = hint_initializers();
+            int k = 0;
+            int rnd_pos = GetRandom();
+            for (int i = 0; i < 9; i++)
+                for (int j = 0; j < 9; j++)
+                {
+                    if (Form1.cp_matrix[i, j] != hint_map[i, j])
+                    {
+                        k++;
+                        if (k == rnd_pos)
+                        {
+                            Form1.cp_matrix[i, j] = hint_map[i, j];
+                            coordinates.i = i;
+                            coordinates.j = j;
+
+                            return coordinates;
+                        }
+                    }
+                }
+
+            return coordinates;
+        }
     }
 }

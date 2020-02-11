@@ -13,7 +13,7 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         private Button[,] buttons;
-        public static int[,] cp_matrix = Sudoku.GenerateCopy(Form2.matrix);
+        public static int[,] cp_matrix;
         public Form1()
         {
             InitializeComponent();
@@ -21,6 +21,8 @@ namespace WindowsFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            cp_matrix = Sudoku.GenerateCopy(Form2.matrix);
+
             buttons = new[,] {
                 { button1, button2, button3, button4, button5, button6, button7, button8, button9, }
                 , { button10, button11, button12, button13, button14, button15, button16, button17, button18, }
@@ -52,8 +54,8 @@ namespace WindowsFormsApp1
         }
 
         private void EventClick(object sender, EventArgs e)
-        { 
-
+        {
+            
         }
 
         public void EventKeyPressed(object sender, KeyEventArgs e)
@@ -61,13 +63,39 @@ namespace WindowsFormsApp1
             if (e.KeyCode >= Keys.D1 && e.KeyCode <= Keys.D9)
             {
                 Sudoku.CheckCorrect_Replace(cp_matrix, e.KeyCode.ToString()[1], (Button)sender, buttons);
-                //Table.set_box((Button)sender, e.KeyCode.ToString()[1]);
+            }
+            else if (e.KeyCode == Keys.Back)
+            {
+                Sudoku.BackSpaceDel(cp_matrix, (Button)sender, buttons);
+            }
+
+            if (Hint.CheckCompletition(cp_matrix))
+            {
+                Form3 f3 = new Form3();
+                Hide();
+                f3.ShowDialog();
+                Close();
             }
         }
 
         private void button82_Click(object sender, EventArgs e)
         {
             //The hint Button
+            var coordinates = new Sudoku.coords();
+            coordinates = Hint.ReplaceRandom();
+
+            Hint.hint_uses++;
+            buttons[coordinates.i, coordinates.j].Text = cp_matrix[coordinates.i, coordinates.j].ToString();
+            buttons[coordinates.i, coordinates.j].BackColor = Color.AliceBlue;
+            
+            if (Hint.CheckCompletition(cp_matrix))
+            {
+                Form3 f3 = new Form3();
+                Hide();
+                f3.ShowDialog();
+                Close();
+                return;
+            }
         }
 
         private void button83_Click(object sender, EventArgs e)
@@ -81,6 +109,12 @@ namespace WindowsFormsApp1
                     buttons[i, j].Text = SudokuSolution.solution_matrix[i, j].ToString();
                     buttons[i, j].BackColor = Color.OrangeRed;
                 }
+
+            Form4 f4 = new Form4();
+            Hide();
+            f4.ShowDialog();
+            Close();
+            return;
         }
     }
 }
